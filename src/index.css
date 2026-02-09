@@ -1,0 +1,18 @@
+/* In src/index.css */
+/* Global styles */
+@import './styles/reset.css';
+@import './styles/variables.css';
+
+/* Component styles - UPDATED PATHS */
+@import './styles/components/navbar.css';
+@import './styles/components/buttons.css';
+@import './styles/components/cards.css';
+
+/* Page styles - FIXED PATHS */
+@import './styles/pages/explore.css';
+@import './styles/pages/about.css';
+@import './styles/pages/dashboard.css';
+
+/* Layout styles */
+@import './styles/layouts/grid.css';
+@import './styles/layouts/flex.css';
