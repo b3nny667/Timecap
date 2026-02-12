@@ -1,12 +1,11 @@
 // pages/DashboardPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
   Calendar, 
   Heart, 
   MapPin, 
-  Clock, 
   TrendingUp, 
   Users, 
   Star, 
@@ -27,7 +26,6 @@ import {
   Sparkles,
   Package,
   Filter,
-  Search,
   Bell,
   Grid,
   List,
@@ -37,8 +35,7 @@ import './DashboardPage.css';
 
 function DashboardPage() {
   const { user } = useAuth();
-  const navigate = useNavigate(); // Add this line
-  const [activeTab, setActiveTab] = useState('overview');
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
@@ -147,13 +144,21 @@ function DashboardPage() {
     }
   ];
 
-  // Mock activity feed
+  // Mock activity feed - FIXED: Added proper icons as React elements
   const activities = [
-    { id: 1, type: 'like', user: 'Sarah M.', memory: 'Sunset Proposal', time: '2 hours ago', icon: '❤️' },
-    { id: 2, type: 'comment', user: 'Alex T.', memory: 'Creative Retreat', time: '5 hours ago', icon: '💬' },
-    { id: 3, type: 'follow', user: 'Maria K.', time: '1 day ago', icon: '👤' },
-    { id: 4, type: 'memory', memory: 'New capsule created', time: '2 days ago', icon: '💎' }
+    { id: 1, type: 'like', user: 'Sarah M.', memory: 'Sunset Proposal', time: '2 hours ago', icon: <Heart size={16} /> },
+    { id: 2, type: 'comment', user: 'Alex T.', memory: 'Creative Retreat', time: '5 hours ago', icon: <Users size={16} /> },
+    { id: 3, type: 'follow', user: 'Maria K.', time: '1 day ago', icon: <Star size={16} /> },
+    { id: 4, type: 'memory', memory: 'New capsule created', time: '2 days ago', icon: <Package size={16} /> }
   ];
+
+  // Get user initials for avatar - FIXED
+  const getUserInitials = () => {
+    if (user?.name) {
+      return user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+    }
+    return 'ME';
+  };
 
   if (loading) {
     return (
@@ -184,7 +189,7 @@ function DashboardPage() {
               <Bell size={20} />
               <span className="notification-badge">3</span>
             </button>
-            <button className="header-btn create-btn">
+            <button className="header-btn create-btn" onClick={() => navigate('/capsules/new')}>
               <Plus size={20} />
               <span>Create</span>
             </button>
@@ -377,11 +382,9 @@ function DashboardPage() {
                         {trip.guests} guest{trip.guests !== 1 ? 's' : ''}
                       </span>
                     </div>
-                    <div className="trip-status">
-                      <span className="status-badge confirmed">
-                        {trip.status}
-                      </span>
-                    </div>
+                    <span className="status-badge confirmed">
+                      {trip.status}
+                    </span>
                   </div>
                   <div className="trip-actions">
                     <button className="trip-btn primary">View Details</button>
@@ -393,19 +396,15 @@ function DashboardPage() {
           </div>
         </div>
 
-        {/* Right Column - Sidebar */}
+        {/* Right Column - Sidebar - FIXED */}
         <div className="dashboard-sidebar">
-          {/* User Profile Card */}
+          {/* User Profile Card - FIXED */}
           <div className="profile-card">
             <div className="profile-header">
               <div className="profile-avatar">
-                {user?.avatar ? (
-                  <img src={user.avatar} alt={user.name} />
-                ) : (
-                  <div className="avatar-placeholder">
-                    {user?.initials || 'ME'}
-                  </div>
-                )}
+                <div className="avatar-placeholder">
+                  {getUserInitials()}
+                </div>
                 <div className="online-status"></div>
               </div>
               <div className="profile-info">
@@ -419,21 +418,21 @@ function DashboardPage() {
             
             <div className="profile-stats">
               <div className="profile-stat">
-                <div className="stat-label">Memory Density</div>
-                <div className="stat-value">{stats?.memoryDensity || 0}%</div>
+                <span className="stat-label">Memory Density</span>
+                <span className="stat-value">{stats?.memoryDensity || 0}%</span>
                 <div className="stat-progress">
                   <div className="progress-bar" style={{ width: `${stats?.memoryDensity || 0}%` }}></div>
                 </div>
               </div>
               <div className="profile-stat">
-                <div className="stat-label">Total Impact</div>
-                <div className="stat-value">{stats?.totalViews || 0}</div>
-                <div className="stat-desc">views on memories</div>
+                <span className="stat-label">Total Impact</span>
+                <span className="stat-value">{stats?.totalViews || 0}</span>
+                <span className="stat-desc">views on memories</span>
               </div>
             </div>
           </div>
 
-          {/* Activity Feed */}
+          {/* Activity Feed - FIXED */}
           <div className="activity-card">
             <div className="card-header">
               <h3 className="card-title">
@@ -470,15 +469,15 @@ function DashboardPage() {
             </div>
             <div className="insights-content">
               <div className="insight-item">
-                <div className="insight-label">Most Popular Memory</div>
-                <div className="insight-value">"Family Reunion at Gazivoda Lake"</div>
+                <span className="insight-label">Most Popular Memory</span>
+                <span className="insight-value">"Family Reunion at Gazivoda Lake"</span>
               </div>
               <div className="insight-item">
-                <div className="insight-label">Top Location</div>
-                <div className="insight-value">Rugova Valley</div>
+                <span className="insight-label">Top Location</span>
+                <span className="insight-value">Rugova Valley</span>
               </div>
               <div className="insight-item">
-                <div className="insight-label">Memory Sentiment</div>
+                <span className="insight-label">Memory Sentiment</span>
                 <div className="insight-value">
                   <span className="sentiment-tag romantic">Romantic</span>
                   <span className="sentiment-tag inspiring">Inspiring</span>
