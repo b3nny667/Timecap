@@ -11,6 +11,7 @@ import SignInPage from './pages/SignInPage';
 import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProfilePage from './pages/Profile';
+import AboutPage from './pages/AboutPage';
 
 import './App.css';
 
@@ -27,6 +28,7 @@ function App() {
               <Route path="/capsules" element={<CapsulesPage />} />
               <Route path="/host" element={<HostPage />} />
               <Route path="/signin" element={<SignInPage />} />
+              <Route path="/about" element={<AboutPage />} />
               
               {/* Protected Routes - Only accessible when logged in */}
               <Route path="/dashboard" element={
